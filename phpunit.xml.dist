@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" colors="true" cacheResult="true" stopOnFailure="false"
+         backupGlobals="false" failOnRisky="true" failOnWarning="true"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd">
+  <coverage>
+    <include>
+      <directory>./src/</directory>
+    </include>
+  </coverage>
+  <testsuite name="PHP Value Object Redux - Test Suite">
+    <directory suffix=".php">./tests</directory>
+  </testsuite>
+</phpunit>

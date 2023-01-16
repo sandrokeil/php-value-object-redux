@@ -1,0 +1,35 @@
+{
+    "name": "sandrokeil/php-valube-object-redux",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Sake\\PhpValueObjectRedux\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Sake\\PhpValueObjectReduxTest\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sandro Keil"
+        }
+    ],
+    "require-dev": {
+        "vimeo/psalm": "^4.26",
+        "phpunit/phpunit": "^9.5",
+        "prooph/php-cs-fixer-config": "^0.5.0",
+        "psalm/plugin-phpunit": "^0.17.0"
+    },
+    "scripts": {
+        "check": [
+            "@cs-check"
+        ],
+        "cs": "php-cs-fixer fix -v --diff --dry-run",
+        "cs-fix": "php-cs-fixer fix -v --diff",
+        "test": "phpunit --colors=always -vvv",
+        "analyze": "vendor/bin/psalm --shepherd --stats"
+    }
+}
