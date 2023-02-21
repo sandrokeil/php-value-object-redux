@@ -1,26 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.26.0@6998fabb2bf528b65777bf9941920888d23c03ac">
+<files psalm-version="5.7.5@5390c212bab06ee230c8720c2e9c54b823db00c8">
   <file src="src/ValueObject/Account.php">
-    <ImpureMethodCall occurrences="1">
+    <ImpureMethodCall>
       <code>convertFromNative</code>
     </ImpureMethodCall>
-    <InvalidArgument occurrences="2">
+    <InvalidArgument>
       <code>self::convertFromNative($data)</code>
       <code>self::convertFromNative([...\get_object_vars($this), ...$data])</code>
     </InvalidArgument>
-    <InvalidDocblock occurrences="1">
+    <InvalidDocblock>
       <code>iterable{firstName : string, lastName : string, age : int|null, address : array}</code>
     </InvalidDocblock>
-    <RedundantPropertyInitializationCheck occurrences="1">
+    <InvalidOperand>
+      <code>$data</code>
+    </InvalidOperand>
+    <RedundantPropertyInitializationCheck>
       <code>isset(self::$__objectKeys)</code>
     </RedundantPropertyInitializationCheck>
   </file>
   <file src="src/ValueObject/Address.php">
-    <ImpureMethodCall occurrences="1">
+    <ImpureMethodCall>
       <code>fromNative</code>
     </ImpureMethodCall>
-    <InvalidArgument occurrences="1">
+    <InvalidArgument>
       <code>self::convertFromNative($data)</code>
     </InvalidArgument>
+    <InvalidOperand>
+      <code>$data</code>
+    </InvalidOperand>
+  </file>
+  <file src="src/ValueObject/ImmutableRecord.php">
+    <MissingTemplateParam>
+      <code>\IteratorAggregate</code>
+    </MissingTemplateParam>
   </file>
 </files>

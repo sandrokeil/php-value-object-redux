@@ -17,7 +17,7 @@ use Sake\PhpValueObjectRedux\ValueObject\LastLogin;
 
 final class LastLoginTest extends TestCase
 {
-    public function provideNative(): \Generator
+    public static function provideNative(): \Generator
     {
         yield 'int 1660999050' => [1661006250];
         yield 'string 2022-08-20T14:37:30+00:00' => ['2022-08-20T14:37:30+00:00'];
