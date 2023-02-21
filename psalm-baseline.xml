@@ -1,3 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="4.26.0@6998fabb2bf528b65777bf9941920888d23c03ac">
+  <file src="src/ValueObject/Account.php">
+    <ImpureMethodCall occurrences="1">
+      <code>convertFromNative</code>
+    </ImpureMethodCall>
+    <InvalidArgument occurrences="2">
+      <code>self::convertFromNative($data)</code>
+      <code>self::convertFromNative([...\get_object_vars($this), ...$data])</code>
+    </InvalidArgument>
+    <InvalidDocblock occurrences="1">
+      <code>iterable{firstName : string, lastName : string, age : int|null, address : array}</code>
+    </InvalidDocblock>
+    <RedundantPropertyInitializationCheck occurrences="1">
+      <code>isset(self::$__objectKeys)</code>
+    </RedundantPropertyInitializationCheck>
+  </file>
+  <file src="src/ValueObject/Address.php">
+    <ImpureMethodCall occurrences="1">
+      <code>fromNative</code>
+    </ImpureMethodCall>
+    <InvalidArgument occurrences="1">
+      <code>self::convertFromNative($data)</code>
+    </InvalidArgument>
+  </file>
 </files>
