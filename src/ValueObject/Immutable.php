@@ -14,6 +14,7 @@ namespace Sake\PhpValueObjectRedux\ValueObject;
 
 /**
  * @psalm-immutable
+ * @method fromNative(mixed $val): self
  */
 interface Immutable extends \JsonSerializable
 {

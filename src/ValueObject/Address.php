@@ -23,35 +23,36 @@ final class Address implements ImmutableRecord
     {
     }
 
-    public static function fromNative(iterable $data): self
+    public static function fromNative(iterable|self $data): static
     {
-        return new self(...self::convertFromNative($data));
+        return $data instanceof self ? $data : new self(...self::convertFromNative($data));
     }
 
-    public function with(iterable $data): self
+    public function with(iterable $data): static
     {
         return self::fromNative([...\get_object_vars($this), ...$data]);
     }
 
     public function getIterator(): Traversable
     {
-        yield 'street' => $this->street->val;
-        yield 'streetNo' => $this->streetNo?->val;
+        yield 'street' => $this->street;
+        yield 'streetNo' => $this->streetNo;
     }
 
     private static function convertFromNative(iterable $data): iterable
     {
         foreach ($data as $field => $value) {
+            // order independent
             switch ($field) {
-                case 'street':
-                    yield $field => Street::fromNative($value);
-
-                    break;
                 case 'streetNo':
                 case 'street_no':
                     if ($value !== null) {
                         yield 'streetNo' => StreetNo::fromNative($value);
                     }
+
+                    break;
+                case 'street':
+                    yield $field => Street::fromNative($value);
 
                     break;
                 default:

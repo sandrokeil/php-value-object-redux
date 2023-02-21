@@ -23,7 +23,7 @@ final class FirstName implements Immutable, \Stringable
 
     public static function fromNative(string|self $firstName): self
     {
-        return new self(\is_object($firstName) ? $firstName->val : $firstName);
+        return $firstName instanceof self ? $firstName : new self($firstName);
     }
 
     public function jsonSerialize(): string

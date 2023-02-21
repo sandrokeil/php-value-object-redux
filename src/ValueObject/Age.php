@@ -17,13 +17,13 @@ namespace Sake\PhpValueObjectRedux\ValueObject;
  */
 final class Age implements Immutable
 {
-    public function __construct(public readonly int $val)
+    private function __construct(public readonly int $val)
     {
     }
 
     public static function fromNative(int|self $age): self
     {
-        return new self(\is_object($age) ? $age->val : $age);
+        return $age instanceof self ? $age : new self($age);
     }
 
     public function jsonSerialize(): int

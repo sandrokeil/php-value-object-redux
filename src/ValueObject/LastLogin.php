@@ -33,7 +33,10 @@ final class LastLogin implements \Stringable, Immutable
 
                 break;
             default:
-                $datetime = $val instanceof self ? $val->val : $val;
+                if ($val instanceof self) {
+                    return $val;
+                }
+                $datetime = $val;
 
                 break;
         }

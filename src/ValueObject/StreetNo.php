@@ -17,13 +17,13 @@ namespace Sake\PhpValueObjectRedux\ValueObject;
  */
 final class StreetNo implements \Stringable, Immutable
 {
-    public function __construct(public readonly string $val)
+    private function __construct(public readonly string $val)
     {
     }
 
     public static function fromNative(string|self $streetNo): self
     {
-        return new self(\is_object($streetNo) ? $streetNo->val : $streetNo);
+        return \is_object($streetNo) ? $streetNo : new self($streetNo);
     }
 
     public function jsonSerialize(): string

@@ -32,22 +32,21 @@ final class Account implements ImmutableRecord
 
     /**
      * @param iterable{firstName : string, lastName : string, age : int|null, address : array} $data
-     * @return static
      */
-    public static function fromNative(iterable $data): self
+    public static function fromNative(iterable|self $data): static
     {
-        return new self(...self::convertFromNative($data));
+        return $data instanceof self ? $data : new self(...self::convertFromNative($data));
     }
 
-    public function with(iterable $data): self
+    public function with(iterable|self $data): static
     {
         return new self(...self::convertFromNative([...\get_object_vars($this), ...$data]));
     }
 
     public function getIterator(): Traversable
     {
-        yield 'firstName' => $this->firstName->val;
-        yield 'age' => $this->age?->val;
+        yield 'firstName' => $this->firstName;
+        yield 'age' => $this->age;
         yield 'address' => $this->address->getIterator();
     }
 
@@ -71,15 +70,16 @@ final class Account implements ImmutableRecord
         $initialized = [];
 
         foreach ($data as $field => $value) {
+            // order independent
             switch ($field) {
-                case 'firstName': // camelCase
-                case 'first_name': // snakeCase
-                    yield 'firstName' => FirstName::fromNative($value);
-
-                    break;
                 case 'lastName':
                 case 'last_name':
                     yield 'lastName' => LastName::fromNative($value);
+
+                    break;
+                case 'firstName': // camelCase
+                case 'first_name': // snakeCase
+                    yield 'firstName' => FirstName::fromNative($value);
 
                     break;
                 case 'address': // deep nesting

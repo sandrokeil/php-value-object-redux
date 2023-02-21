@@ -17,13 +17,13 @@ namespace Sake\PhpValueObjectRedux\ValueObject;
  */
 final class Active implements Immutable
 {
-    public function __construct(public readonly bool $val)
+    private function __construct(public readonly bool $val)
     {
     }
 
-    public static function fromNative(bool|self $active): self
+    public static function fromNative(bool|self $active): static
     {
-        return new self(\is_object($active) ? $active->val : $active);
+        return $active instanceof self ? $active : new self($active);
     }
 
     public function jsonSerialize(): bool

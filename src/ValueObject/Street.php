@@ -23,7 +23,7 @@ final class Street implements Immutable, \Stringable
 
     public static function fromNative(string|self $street): self
     {
-        return new self(\is_object($street) ? $street->val : $street);
+        return $street instanceof self ? $street : new self($street);
     }
 
     public function jsonSerialize(): string
