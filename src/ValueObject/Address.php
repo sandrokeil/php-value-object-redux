@@ -17,8 +17,10 @@ use Traversable;
 /**
  * @psalm-immutable
  */
-final class Address implements ImmutableRecord
+final readonly class Address implements ImmutableRecord
 {
+    use EqualsTrait;
+
     private function __construct(public readonly Street $street, public readonly ?StreetNo $streetNo = null)
     {
     }
@@ -26,6 +28,11 @@ final class Address implements ImmutableRecord
     public static function fromNative(iterable|self $data): static
     {
         return $data instanceof self ? $data : new self(...self::convertFromNative($data));
+    }
+
+    public function toNative(): iterable
+    {
+        return $this->jsonSerialize();
     }
 
     public function with(iterable $data): static
@@ -67,8 +74,8 @@ final class Address implements ImmutableRecord
     public function jsonSerialize(): array
     {
         return [
-            'street' => $this->street->val,
-            'streetNo' => $this->streetNo?->val,
+            'street' => $this->street->v,
+            'streetNo' => $this->streetNo?->v,
         ];
     }
 }

@@ -34,5 +34,7 @@ final class LastLoginTest extends TestCase
     {
         $cut = LastLogin::fromNative($value);
         $this->assertSame('2022-08-20T14:37:30+00:00', (string) $cut);
+        $this->assertSame('2022-08-20T14:37:30+00:00', $cut->toNative());
+        $this->assertInstanceOf(\DateTimeImmutable::class, $cut->v);
     }
 }

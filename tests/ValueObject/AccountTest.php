@@ -35,7 +35,7 @@ final class AccountTest extends TestCase
             'active' => false,
         ]);
 
-        $this->assertSame('Doe', $account->lastName->val);
+        $this->assertSame('Doe', $account->lastName->v);
     }
 
     /**
@@ -56,12 +56,12 @@ final class AccountTest extends TestCase
             switch ($key) {
                 case 'firstName':
                     $this->assertInstanceOf(FirstName::class, $value);
-                    $this->assertSame('Jane', $value->val);
+                    $this->assertSame('Jane', $value->v);
 
                     break;
                 case 'lastName':
                     $this->assertInstanceOf(LastName::class, $value);
-                    $this->assertSame('Doe', $value->val);
+                    $this->assertSame('Doe', $value->v);
 
                     break;
                 case 'address':
@@ -69,7 +69,7 @@ final class AccountTest extends TestCase
                     foreach ($value as $itemKey => $item) {
                         if ($itemKey === 'street') {
                             $this->assertInstanceOf(Street::class, $item);
-                            $this->assertSame('Awesome Avenue', $item->val);
+                            $this->assertSame('Awesome Avenue', $item->v);
                         } else {
                             $this->assertNull($item);
                         }
@@ -78,7 +78,7 @@ final class AccountTest extends TestCase
                     break;
                 case 'active':
                     $this->assertInstanceOf(Active::class, $value);
-                    $this->assertFalse($value->val);
+                    $this->assertFalse($value->v);
 
                     break;
                 case 'age':
@@ -136,13 +136,15 @@ final class AccountTest extends TestCase
             'active' => false,
         ]);
 
-        $this->assertSame('Jane', $account->firstName->val);
-        $this->assertSame('Doe', $account->lastName->val);
+        $this->assertSame('Jane', $account->firstName->v);
+        $this->assertSame('Doe', $account->lastName->v);
 
         $accountCopy = $account->with(['firstName' => 'Doe', 'lastName' => 'Jane']);
 
-        $this->assertSame('Jane', $accountCopy->lastName->val);
-        $this->assertSame('Doe', $accountCopy->firstName->val);
+        $this->assertSame('Jane', $accountCopy->lastName->v);
+        $this->assertSame('Jane', $accountCopy->lastName->toNative());
+        $this->assertSame('Doe', $accountCopy->firstName->v);
+        $this->assertSame('Doe', $accountCopy->firstName->toNative());
         $this->assertNotSame($account->lastName, $accountCopy->lastName);
         $this->assertNotSame($account->firstName, $accountCopy->firstName);
     }
@@ -161,8 +163,9 @@ final class AccountTest extends TestCase
             'active' => false,
         ]);
 
-        $this->assertSame(false, $account->active->val);
-        $this->assertSame('Awesome Avenue', $account->address->street->val);
+        $this->assertSame(false, $account->active->v);
+        $this->assertSame(false, $account->active->toNative());
+        $this->assertSame('Awesome Avenue', $account->address->street->v);
     }
 
     /**
@@ -181,8 +184,8 @@ final class AccountTest extends TestCase
 
         $accountCopy = Account::fromNative($account);
 
-        $this->assertFalse($accountCopy->active->val);
-        $this->assertSame('Awesome Avenue', $accountCopy->address->street->val);
+        $this->assertFalse($accountCopy->active->v);
+        $this->assertSame('Awesome Avenue', $accountCopy->address->street->v);
         $this->assertSame($account->active, $accountCopy->active);
         $this->assertSame($account->address, $accountCopy->address);
     }
@@ -200,6 +203,6 @@ final class AccountTest extends TestCase
             ],
         ]);
 
-        $this->assertSame(true, $account->active->val);
+        $this->assertSame(true, $account->active->v);
     }
 }

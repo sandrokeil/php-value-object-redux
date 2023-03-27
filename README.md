@@ -1,9 +1,9 @@
 # PHP ^8.1 Value Objects Redux
 
-Opinionated PHP immutable value object example with deep nesting, `\JsonSerializable`, `\IteratorAggregate`, `snake_case` and `camelCase`. Please see source and tests for more details.
+Opinionated PHP immutable value object example with deep nesting, `\JsonSerializable`, `\IteratorAggregate`, `snake_case` and `camelCase`. Please see `example-php`, source and tests for more details.
 
 - simple and short immutable value objects
-- plain value objects have 2 methods `fromNative(...)` and `jsonSerialize()`
+- plain value objects have 4 methods `fromNative(...)`, `toNative()`, `equals(...)` and `jsonSerialize()`
 - records have additional 2 methods `with(iterable|self $data)` and `getIterator()` 
 - records are traversable, you can iterate over the properties
 - union types for creating value objects from scalar or same value object type
@@ -14,9 +14,11 @@ Opinionated PHP immutable value object example with deep nesting, `\JsonSerializ
 **Example for a String value object:**
 
 ```php
-final class FirstName implements Immutable, \Stringable
+final readonly class FirstName implements Immutable, \Stringable
 {
-    private function __construct(public readonly string $val)
+    use FuncTrait;
+
+    private function __construct(public readonly string $v)
     {
     }
 
@@ -25,14 +27,19 @@ final class FirstName implements Immutable, \Stringable
         return $firstName instanceof self ? $firstName : new self($firstName);
     }
 
+    public function toNative(): string
+    {
+        return $this->jsonSerialize();
+    }
+
     public function jsonSerialize(): string
     {
-        return $this->val;
+        return $this->v;
     }
 
     public function __toString(): string
     {
-        return $this->val;
+        return $this->v;
     }
 }
 ```
@@ -40,26 +47,28 @@ final class FirstName implements Immutable, \Stringable
 **Example for a date value object:**
 
 ```php
-final class LastLogin implements \Stringable, Immutable
+final readonly class LastLogin implements \Stringable, Immutable
 {
+    use FuncTrait;
+
     private const OUTPUT_FORMAT = 'Y-m-d\TH:i:sP';
 
-    public static function fromNative(string|int|DateTimeImmutable|self $val): self
+    public static function fromNative(string|int|DateTimeImmutable|self $v): self
     {
-        switch (\gettype($val)) {
+        switch (\gettype($v)) {
             case 'integer':
-                $datetime = (new DateTimeImmutable())->setTimestamp($val);
+                $datetime = (new DateTimeImmutable())->setTimestamp($v);
 
                 break;
             case 'string':
-                $datetime = new DateTimeImmutable($val);
+                $datetime = new DateTimeImmutable($v);
 
                 break;
             default:
-                if ($val instanceof self) {
-                    return $val;
+                if ($v instanceof self) {
+                    return $v;
                 }
-                $datetime = $val;
+                $datetime = $v;
 
                 break;
         }
@@ -67,7 +76,12 @@ final class LastLogin implements \Stringable, Immutable
         return new self(self::ensureUtc($datetime));
     }
 
-    private function __construct(public readonly DateTimeImmutable $val)
+    public function toNative(): string
+    {
+        return $this->jsonSerialize();
+    }
+
+    private function __construct(public readonly DateTimeImmutable $v)
     {
     }
 
@@ -87,7 +101,7 @@ final class LastLogin implements \Stringable, Immutable
 
     public function jsonSerialize(): string
     {
-        return $this->val->format(self::OUTPUT_FORMAT);
+        return $this->v->format(self::OUTPUT_FORMAT);
     }
 }
 ```
@@ -97,6 +111,8 @@ final class LastLogin implements \Stringable, Immutable
 ```php
 final class Account implements ImmutableRecord
 {
+    use FuncTrait;
+
     private static array $__objectKeys;
 
     private function __construct(
@@ -108,9 +124,17 @@ final class Account implements ImmutableRecord
     ) {
     }
 
+    /**
+     * @param iterable{firstName : string, lastName : string, age : int|null, address : array} $data
+     */
     public static function fromNative(iterable|self $data): static
     {
         return $data instanceof self ? $data : new self(...self::convertFromNative($data));
+    }
+
+    public function toNative(): array
+    {
+        return $this->jsonSerialize();
     }
 
     public function with(iterable|self $data): static
@@ -121,18 +145,20 @@ final class Account implements ImmutableRecord
     public function getIterator(): Traversable
     {
         yield 'firstName' => $this->firstName;
+        yield 'lastName' => $this->lastName;
         yield 'age' => $this->age;
         yield 'address' => $this->address->getIterator();
+        yield 'active' => $this->active;
     }
 
     public function jsonSerialize(): array
     {
         return [
-            'firstName' => $this->firstName->val,
-            'lastName' => $this->lastName->val,
-            'age' => $this->age?->val,
+            'firstName' => $this->firstName->v,
+            'lastName' => $this->lastName->v,
+            'age' => $this->age?->v,
             'address' => $this->address->jsonSerialize(),
-            'active' => $this->active->val,
+            'active' => $this->active->v,
         ];
     }
 

@@ -15,9 +15,11 @@ namespace Sake\PhpValueObjectRedux\ValueObject;
 /**
  * @psalm-immutable
  */
-final class Active implements Immutable
+final readonly class Active implements Immutable
 {
-    private function __construct(public readonly bool $val)
+    use EqualsTrait;
+
+    private function __construct(public readonly bool $v)
     {
     }
 
@@ -26,8 +28,13 @@ final class Active implements Immutable
         return $active instanceof self ? $active : new self($active);
     }
 
+    public function toNative(): bool
+    {
+        return $this->jsonSerialize();
+    }
+
     public function jsonSerialize(): bool
     {
-        return $this->val;
+        return $this->v;
     }
 }

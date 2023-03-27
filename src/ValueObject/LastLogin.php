@@ -17,26 +17,28 @@ use DateTimeImmutable;
 /**
  * @psalm-immutable
  */
-final class LastLogin implements \Stringable, Immutable
+final readonly class LastLogin implements \Stringable, Immutable
 {
+    use EqualsTrait;
+
     private const OUTPUT_FORMAT = 'Y-m-d\TH:i:sP';
 
-    public static function fromNative(string|int|DateTimeImmutable|self $val): self
+    public static function fromNative(string|int|DateTimeImmutable|self $v): self
     {
-        switch (\gettype($val)) {
+        switch (\gettype($v)) {
             case 'integer':
-                $datetime = (new DateTimeImmutable())->setTimestamp($val);
+                $datetime = (new DateTimeImmutable())->setTimestamp($v);
 
                 break;
             case 'string':
-                $datetime = new DateTimeImmutable($val);
+                $datetime = new DateTimeImmutable($v);
 
                 break;
             default:
-                if ($val instanceof self) {
-                    return $val;
+                if ($v instanceof self) {
+                    return $v;
                 }
-                $datetime = $val;
+                $datetime = $v;
 
                 break;
         }
@@ -44,7 +46,12 @@ final class LastLogin implements \Stringable, Immutable
         return new self(self::ensureUtc($datetime));
     }
 
-    private function __construct(public readonly DateTimeImmutable $val)
+    public function toNative(): string
+    {
+        return $this->jsonSerialize();
+    }
+
+    private function __construct(public readonly DateTimeImmutable $v)
     {
     }
 
@@ -64,6 +71,6 @@ final class LastLogin implements \Stringable, Immutable
 
     public function jsonSerialize(): string
     {
-        return $this->val->format(self::OUTPUT_FORMAT);
+        return $this->v->format(self::OUTPUT_FORMAT);
     }
 }

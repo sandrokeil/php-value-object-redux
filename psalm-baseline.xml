@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.7.5@5390c212bab06ee230c8720c2e9c54b823db00c8">
+<files psalm-version="5.8.0@9cf4f60a333f779ad3bc704a555920e81d4fdcda">
   <file src="src/ValueObject/Account.php">
     <ImpureMethodCall>
       <code>convertFromNative</code>
@@ -14,9 +14,17 @@
     <InvalidOperand>
       <code>$data</code>
     </InvalidOperand>
+    <MissingImmutableAnnotation>
+      <code>Account</code>
+    </MissingImmutableAnnotation>
     <RedundantPropertyInitializationCheck>
       <code>isset(self::$__objectKeys)</code>
     </RedundantPropertyInitializationCheck>
+  </file>
+  <file src="src/ValueObject/Active.php">
+    <MissingImmutableAnnotation>
+      <code>Active</code>
+    </MissingImmutableAnnotation>
   </file>
   <file src="src/ValueObject/Address.php">
     <ImpureMethodCall>
@@ -28,10 +36,43 @@
     <InvalidOperand>
       <code>$data</code>
     </InvalidOperand>
+    <MissingImmutableAnnotation>
+      <code>Address</code>
+    </MissingImmutableAnnotation>
+  </file>
+  <file src="src/ValueObject/Age.php">
+    <MissingImmutableAnnotation>
+      <code>Age</code>
+    </MissingImmutableAnnotation>
+  </file>
+  <file src="src/ValueObject/FirstName.php">
+    <MissingImmutableAnnotation>
+      <code>FirstName</code>
+    </MissingImmutableAnnotation>
   </file>
   <file src="src/ValueObject/ImmutableRecord.php">
     <MissingTemplateParam>
       <code>\IteratorAggregate</code>
     </MissingTemplateParam>
+  </file>
+  <file src="src/ValueObject/LastLogin.php">
+    <MissingImmutableAnnotation>
+      <code>LastLogin</code>
+    </MissingImmutableAnnotation>
+  </file>
+  <file src="src/ValueObject/LastName.php">
+    <MissingImmutableAnnotation>
+      <code>LastName</code>
+    </MissingImmutableAnnotation>
+  </file>
+  <file src="src/ValueObject/Street.php">
+    <MissingImmutableAnnotation>
+      <code>Street</code>
+    </MissingImmutableAnnotation>
+  </file>
+  <file src="src/ValueObject/StreetNo.php">
+    <MissingImmutableAnnotation>
+      <code>StreetNo</code>
+    </MissingImmutableAnnotation>
   </file>
 </files>

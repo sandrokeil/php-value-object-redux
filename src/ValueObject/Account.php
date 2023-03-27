@@ -19,6 +19,8 @@ use Traversable;
  */
 final class Account implements ImmutableRecord
 {
+    use EqualsTrait;
+
     private static array $__objectKeys;
 
     private function __construct(
@@ -38,6 +40,11 @@ final class Account implements ImmutableRecord
         return $data instanceof self ? $data : new self(...self::convertFromNative($data));
     }
 
+    public function toNative(): array
+    {
+        return $this->jsonSerialize();
+    }
+
     public function with(iterable|self $data): static
     {
         return new self(...self::convertFromNative([...\get_object_vars($this), ...$data]));
@@ -46,18 +53,20 @@ final class Account implements ImmutableRecord
     public function getIterator(): Traversable
     {
         yield 'firstName' => $this->firstName;
+        yield 'lastName' => $this->lastName;
         yield 'age' => $this->age;
         yield 'address' => $this->address->getIterator();
+        yield 'active' => $this->active;
     }
 
     public function jsonSerialize(): array
     {
         return [
-            'firstName' => $this->firstName->val,
-            'lastName' => $this->lastName->val,
-            'age' => $this->age?->val,
+            'firstName' => $this->firstName->v,
+            'lastName' => $this->lastName->v,
+            'age' => $this->age?->v,
             'address' => $this->address->jsonSerialize(),
-            'active' => $this->active->val,
+            'active' => $this->active->v,
         ];
     }
 

@@ -17,6 +17,9 @@
             "name": "Sandro Keil"
         }
     ],
+    "require": {
+        "php": "^8.2"
+    },
     "require-dev": {
         "vimeo/psalm": "^5.7.4",
         "phpunit/phpunit": "^10.0.11",

@@ -16,5 +16,7 @@ interface ImmutableRecord extends \IteratorAggregate, Immutable
 {
     public static function fromNative(iterable|self $data): static;
 
+    public function toNative(): iterable;
+
     public function with(iterable|self $data): static;
 }

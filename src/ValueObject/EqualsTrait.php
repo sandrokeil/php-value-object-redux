@@ -12,12 +12,14 @@ declare(strict_types=1);
 
 namespace Sake\PhpValueObjectRedux\ValueObject;
 
-/**
- * @psalm-immutable
- * @method static self fromNative(mixed $v)
- * @method mixed toNative()
- */
-interface Immutable extends \JsonSerializable
+trait EqualsTrait
 {
-    public function equals(mixed $other): bool;
+    public function equals(mixed $other): bool
+    {
+        if (! $other instanceof self) {
+            return false;
+        }
+
+        return $this->toNative() === $other->toNative();
+    }
 }

@@ -15,9 +15,11 @@ namespace Sake\PhpValueObjectRedux\ValueObject;
 /**
  * @psalm-immutable
  */
-final class LastName implements \Stringable, Immutable
+final readonly class LastName implements \Stringable, Immutable
 {
-    private function __construct(public readonly string $val)
+    use EqualsTrait;
+
+    private function __construct(public readonly string $v)
     {
     }
 
@@ -26,13 +28,18 @@ final class LastName implements \Stringable, Immutable
         return $lastName instanceof self ? $lastName : new self($lastName);
     }
 
+    public function toNative(): string
+    {
+        return $this->jsonSerialize();
+    }
+
     public function jsonSerialize(): string
     {
-        return $this->val;
+        return $this->v;
     }
 
     public function __toString(): string
     {
-        return $this->val;
+        return $this->v;
     }
 }
