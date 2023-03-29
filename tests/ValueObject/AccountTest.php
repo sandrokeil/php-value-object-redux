@@ -205,4 +205,30 @@ final class AccountTest extends TestCase
 
         $this->assertSame(true, $account->active->v);
     }
+
+    /**
+     * @test
+     */
+    public function it_can_be_compared(): void
+    {
+        $account = Account::fromNative([
+            'firstName' => FirstName::fromNative('Jane'),
+            'lastName' => 'Doe',
+            'address' => [
+                'street' => 'Awesome Avenue',
+            ],
+            'active' => false,
+        ]);
+        $account2 = Account::fromNative([
+            'firstName' => FirstName::fromNative('Jane'),
+            'lastName' => 'Doe',
+            'address' => [
+                'street' => 'Awesome Avenue',
+            ],
+            'active' => false,
+        ]);
+
+        $this->assertTrue($account->equals($account2));
+        $this->assertFalse($account->equals($account2->with(['active' => true])));
+    }
 }

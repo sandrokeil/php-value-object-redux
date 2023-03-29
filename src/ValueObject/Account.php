@@ -87,7 +87,7 @@ final class Account implements ImmutableRecord
 
                     break;
                 case 'firstName': // camelCase
-                case 'first_name': // snakeCase
+                case 'first_name': // snake_case
                     yield 'firstName' => FirstName::fromNative($value);
 
                     break;
